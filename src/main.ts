@@ -3,8 +3,8 @@ import * as Path from 'path'
 import chalk, { Chalk } from 'chalk'
 import indent from 'indent-string'
 
-import {exec} from './async/child-process'
 import {TestRepo} from './test-repo'
+import {exec} from './async/child-process'
 
 
 async function asyncMain() {
@@ -34,7 +34,6 @@ async function asyncMain() {
                 if (stderr != '')
                     console.log(indent(`stderr:\n${indent(chalk.red(stderr), 4)}`, 4))
             }
-            
         }
     }
 }

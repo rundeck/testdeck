@@ -1,5 +1,5 @@
-import * as util from 'util'
 import * as FS from 'fs'
+import * as util from 'util'
 
 export const readdir = util.promisify(FS.readdir)
 

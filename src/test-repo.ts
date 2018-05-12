@@ -1,15 +1,16 @@
 import {Stats} from 'fs'
-import * as FS from './async/fs'
 import * as Path from 'path'
 
-interface Test {
+import * as FS from './async/fs'
+
+interface ITest {
     name: string
     file: string
 }
 
-interface TestGroup {
+interface ITestGroup {
     name: string
-    tests: Test[]
+    tests: ITest[]
 }
 
 /**
@@ -25,7 +26,7 @@ export class TestRepo {
         return new TestRepo(groups)
     }
 
-    private static async _loadRepo(path: string): Promise<TestGroup[]> {
+    private static async _loadRepo(path: string): Promise<ITestGroup[]> {
         const dirContents = await this._dirContents(path)
 
         const dirStats = await this._statFiles(dirContents)
@@ -39,7 +40,7 @@ export class TestRepo {
         return await Promise.all(groupProms)
     }
 
-    private static async _loadRepoFolder(path: string, groupName?: string): Promise<TestGroup> {
+    private static async _loadRepoFolder(path: string, groupName?: string): Promise<ITestGroup> {
         groupName = groupName ? groupName : path.split(Path.sep).pop()!
 
         const dirContents = (await FS.readdir(path)).map( f => Path.join(path, f))
@@ -51,7 +52,7 @@ export class TestRepo {
         const testEntries = dirStats.filter( e => e.stats.isFile() )
 
         const tests = testEntries.map( t => ({file: t.file, name: Path.basename(t.file).split('.').shift()!}) )
-    
+
         return {
             name: groupName,
             tests,
@@ -68,5 +69,5 @@ export class TestRepo {
         ).map( (s, i) => ({file: paths[i], stats: s}) )
     }
 
-    constructor(readonly groups: TestGroup[]) {}
+    constructor(readonly groups: ITestGroup[]) {}
 }
