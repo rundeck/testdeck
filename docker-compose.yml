@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  rundeck:
+    image: jordan/rundeck
+    ports: ['8080:4440']
+
+    environment:
+      - EXTERNAL_SERVER_URL=http://localhost:8080
