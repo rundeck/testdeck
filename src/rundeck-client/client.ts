@@ -1,91 +1,12 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
+import * as Dto from './dto'
+
 interface IClientOpts {
     apiUrl: string
     username?: string
     password?: string
     token?: string
-}
-
-interface IUser {
-    login: string
-    firstName: string
-    lastName: string
-    email: string
-}
-
-interface ISystemInfoResponse {
-    system: ISystemInfo
-}
-
-interface ISystemInfo {
-    timestamp: {
-        epoch: number,
-        unit: string,
-        datetime: string,
-    }
-    rundeck: {
-        version: string,
-        build: string,
-        node: string,
-        base: string,
-        apiversion: number,
-        serverUUID?: string,
-    }
-    executions: {
-        active: boolean,
-        executionMode: string,
-    }
-    os: {
-        arch: string,
-        name: string,
-        version: string,
-    }
-    jvm: {
-        name: string,
-        vendor: string,
-        version: string,
-        implementation: string,
-    }
-    stats: {
-        uptime: {
-            duration: number,
-            unit: string,
-            since: {
-                epoch: number,
-                unit: string,
-                datetime: string,
-            },
-        },
-        cpu: {
-            loadAverage: {
-                unit: string,
-                average: number,
-            },
-            processors: number,
-        },
-        memory: {
-            unit: string,
-            max: number,
-            free: number,
-            total: number,
-        },
-        scheduler: {
-            running: number,
-            threadPoolSize: number,
-       },
-       threads: {
-           active: number,
-       },
-    },
-    metrics: {
-        href: string,
-        contentType: string,
-    },
-    threadDump: {
-        href: string,
-        contentType: string,
-    },
 }
 
 export class Client {
@@ -108,14 +29,14 @@ export class Client {
         return this.loginProm
     }
 
-    async listUsers(): Promise<AxiosResponse<IUser[]>> {
+    async listUsers(): Promise<AxiosResponse<Dto.IUser[]>> {
         const path = `${this.opts.apiUrl}/api/21/user/list`
-        return this.get<IUser[]>(path)
+        return this.get<Dto.IUser[]>(path)
     }
 
-    async systemInfo(): Promise<AxiosResponse<ISystemInfoResponse>> {
+    async systemInfo(): Promise<AxiosResponse<Dto.ISystemInfoResponse>> {
         const path = `${this.opts.apiUrl}/api/14/system/info`
-        return this.get<ISystemInfoResponse>(path)
+        return this.get<Dto.ISystemInfoResponse>(path)
     }
 
     async get<T>(url: string, config?: AxiosRequestConfig) {
