@@ -4,7 +4,7 @@
 import 'chromedriver'
 import webdriver, {WebDriver} from 'selenium-webdriver'
 import {By, until} from 'selenium-webdriver'
-import { sleep } from '../src/async/util'
+import {Options} from 'selenium-webdriver/chrome'
 
 enum Elems {
     username= '//*[@id="login"]',
@@ -16,8 +16,14 @@ enum Elems {
 let driver: WebDriver
 
 beforeAll( async () => {
+    const opts = new Options()
+
+    if (process.env.CI)
+        opts.addArguments('--headless')
+
     driver = await new webdriver.Builder()
         .forBrowser('chrome')
+        .setChromeOptions(opts)
         .build()
 })
 
