@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 import * as yargs from 'yargs' // Yargs matey!
 
 import { spawn } from './async/child-process'
