@@ -19,5 +19,6 @@ install:
   - npm install -g typescript ts-node
 
 script:
+  - ./node_modules/.bin/tslint --project .
   - ts-node src/main.ts -r jest
   - ts-node src/main.ts -r bitscript
