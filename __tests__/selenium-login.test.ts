@@ -6,6 +6,8 @@ import webdriver, {WebDriver} from 'selenium-webdriver'
 import {By, until} from 'selenium-webdriver'
 import {Options} from 'selenium-webdriver/chrome'
 
+jest.setTimeout(15000)
+
 enum Elems {
     username= '//*[@id="login"]',
     password = '//*[@id="password"]',
@@ -13,6 +15,7 @@ enum Elems {
     loginBtn = '//*[@id="loginpage"]/div[1]/div/div/div/form/div[3]/button',
 }
 
+// We will initialize and cleanup in the before/after methods
 let driver: WebDriver
 
 beforeAll( async () => {
@@ -35,16 +38,16 @@ afterAll( async () => {
 })
 
 it('Logs in through the GUI', async () => {
-    jest.setTimeout(15000)
-
     await driver.get('http://localhost:8080')
 
+    // Fetches the elements concurrently
     const [username, password, loginBtn] = await Promise.all([
         driver.findElement(By.xpath(Elems.username)),
         driver.findElement(By.xpath(Elems.password)),
         driver.findElement(By.xpath(Elems.loginBtn)),
     ])
 
+    // Fills in the fields concurrently
     await Promise.all([
         username.sendKeys('admin'),
         password.sendKeys('admin'),
@@ -53,4 +56,4 @@ it('Logs in through the GUI', async () => {
     await loginBtn.click()
 
     await driver.wait(until.titleMatches(/^Rundeck$/))
- })
+})

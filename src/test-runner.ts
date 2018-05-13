@@ -37,7 +37,7 @@ export class BitScriptRunner {
 
                 try {
                     const res = await exec(test.file)
-                    console.log(`${chalk.green('✔️')} ${test.name}`)
+                    console.log(`${chalk.green('✔️')} ${group.name}/${test.name}`)
                     stdout = res.stdout
                     stderr = res.stderr
                     success = true
