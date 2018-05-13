@@ -3,10 +3,18 @@ jdk:
   - oraclejdk8
 services:
   - docker
-addons:
-  apt:
-    - rundeck-cli
 before_install:
+  - sudo echo "deb https://dl.bintray.com/rundeck/rundeck-deb /" | sudo tee -a /etc/apt/sources.list.d/rundeck.list
+  - curl "https://bintray.com/user/downloadSubjectPublicKey?username=bintray" > /tmp/bintray.gpg.key
+  - sudo apt-key add - < /tmp/bintray.gpg.key
+  - sudo apt-get -y install apt-transport-https
+  - sudo apt-get -y update
+  - sudo apt-get -y install rundeck-cli
   - nvm install 8
 install:
   - npm install
+  - docker-compose up -d rundeck
+  - npm install -g typescript ts-node
+
+script:
+  - ts-node src/main.ts
