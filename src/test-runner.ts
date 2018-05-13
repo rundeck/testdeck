@@ -16,7 +16,7 @@ interface ITestGroupResult {
     testResults: ITestResult[]
 }
 
-export class TestRunner {
+export class BitScriptRunner {
     constructor(readonly testRepo: TestRepo) {}
 
     async run() {
@@ -90,7 +90,14 @@ export class TestRunner {
             metrics.push(chalk.green(`${passed} passed`))
         metrics.push(`${total} total`)
 
-        console.log(`Tests: ${metrics.join(', ')}`)
+        let statusEmoji = ''
+
+        if (failed == 0)
+            statusEmoji = chalk.green('💯')
+        else
+            statusEmoji = chalk.red('⛔')
+
+        console.log(`${statusEmoji} Tests: ${metrics.join(', ')}`)
 
         if (passed != 0)
             process.exitCode = 1

@@ -14,6 +14,12 @@ export class EnvBuilder {
      * Returns after the testing environment is ready.
      */
     async up() {
+        console.log(`
+Setting up test environment.
+This can take a few minutes if the docker conatiner is not running.
+Sit tight...\n
+        `)
+
         await CP.exec('docker-compose up -d')
         await this.waitForRundeckReady()
     }
@@ -22,6 +28,10 @@ export class EnvBuilder {
      * Returns after the testing environment has been cleaned up.
      */
     async down() {
+        console.log(`
+Tearing down test environment...
+        `)
+
         await CP.exec('docker-compose down')
     }
 
