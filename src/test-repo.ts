@@ -3,12 +3,12 @@ import * as Path from 'path'
 
 import * as FS from './async/fs'
 
-interface ITest {
+export interface ITest {
     name: string
     file: string
 }
 
-interface ITestGroup {
+export interface ITestGroup {
     name: string
     tests: ITest[]
 }
@@ -43,15 +43,21 @@ export class TestRepo {
     private static async _loadRepoFolder(path: string, groupName?: string): Promise<ITestGroup> {
         groupName = groupName ? groupName : path.split(Path.sep).pop()!
 
-        const dirContents = (await FS.readdir(path)).map( f => Path.join(path, f))
+        const dirContents = (await FS.readdir(path)).map( f => Path.join(path, f) )
 
         const dirStats = (
-            await Promise.all(dirContents.map(f => FS.stat(f)))
+            await Promise.all( dirContents.map(f => FS.stat(f)) )
         ).map( (s, i) => ({file: dirContents[i], stats: s}) )
 
         const testEntries = dirStats.filter( e => e.stats.isFile() )
 
-        const tests = testEntries.map( t => ({file: t.file, name: Path.basename(t.file).split('.').shift()!}) )
+        const tests = testEntries.map(
+            t => ({
+                file: t.file,
+                name:
+                Path.basename(t.file).split('.').shift()!,
+            }),
+        )
 
         return {
             name: groupName,
@@ -60,12 +66,14 @@ export class TestRepo {
     }
 
     private static async _dirContents(path: string): Promise<string[]> {
-        return (await FS.readdir(path)).map( f => Path.join(path, f))
+        return (await FS.readdir(path)).map( f => Path.join(path, f) )
     }
 
     private static async _statFiles(paths: string[]): Promise<Array<{file: string, stats: Stats}>> {
         return (
-            await Promise.all(paths.map(f => FS.stat(f)))
+            await Promise.all(
+                paths.map( f => FS.stat(f) ),
+            )
         ).map( (s, i) => ({file: paths[i], stats: s}) )
     }
 
