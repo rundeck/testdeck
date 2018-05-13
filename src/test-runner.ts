@@ -99,7 +99,7 @@ export class BitScriptRunner {
 
         console.log(`${statusEmoji} Tests: ${metrics.join(', ')}`)
 
-        if (passed != 0)
+        if (failed != 0)
             process.exitCode = 1
     }
 }
