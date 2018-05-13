@@ -48,12 +48,12 @@ Options:
 
 Pick a runner and go:
 ```
-./src/main -r bitscript
+./src/main.ts -r bitscript
 ```
 
 Enter watch mode with jest:
 ```
-./src/main -r jest -j='--watch'
+./src/main.ts -r jest -j='--watch'
 ```
 
 Add BitScript runner tests to ```./tests/```  
