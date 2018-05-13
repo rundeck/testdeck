@@ -44,7 +44,9 @@ async function asyncMain() {
         const testRunner = new BitScriptRunner(testRepo)
         await testRunner.run()
     } else {
-        await spawn('/bin/sh', ['-c', `./node_modules/.bin/jest ${argv.jest}`], {stdio: 'inherit'})
+        const ret = await spawn('/bin/sh', ['-c', `./node_modules/.bin/jest ${argv.jest}`], {stdio: 'inherit'})
+        if (ret != 0)
+            process.exitCode = 1
     }
 
     if (argv.teardown)
