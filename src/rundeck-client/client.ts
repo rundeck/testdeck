@@ -124,9 +124,14 @@ export class Client {
     }
 
     private async _doLogin(): Promise<void> {
-        const {apiUrl, username, password} = this.opts
-        const path = `${this.opts.apiUrl}/j_security_check?j_username=${username}&j_password=${password}`
-        const resp = await this.c.post(path, null, {validateStatus: s => s >= 300 && s <= 400})
-        this.c.defaults.headers.Cookie = resp.headers['set-cookie'][0]
+        try {
+            const {apiUrl, username, password} = this.opts
+            const path = `${this.opts.apiUrl}/j_security_check?j_username=${username}&j_password=${password}`
+            const resp = await this.c.post(path, null, {validateStatus: s => s >= 300 && s <= 400})
+            this.c.defaults.headers.Cookie = resp.headers['set-cookie'][0]
+        } catch (e) {
+            this.loginProm = undefined
+            throw e
+        }
     }
 }
