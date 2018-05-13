@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "suite": "./node_modules/.bin/ts-node src/main.ts",
+    "bitscript": "./node_modules/.bin/ts-node src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,6 +13,7 @@
     "@types/indent-string": "^3.0.0",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.8",
+    "@types/yargs": "^11.0.0",
     "chalk": "^2.4.1",
     "jest": "^22.4.3",
     "ts-node": "^6.0.3",
@@ -21,6 +22,29 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "indent-string": "^3.2.0"
+    "indent-string": "^3.2.0",
+    "ts-jest": "^22.4.6",
+    "yargs": "^11.0.0"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "./"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      ".(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.(spec|test).(ts|tsx|js)"
+    ],
+    "testEnvironment": "node"
   }
 }

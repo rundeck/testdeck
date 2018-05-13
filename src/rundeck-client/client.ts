@@ -1,4 +1,4 @@
-import Axios, { AxiosAdapter, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 interface IClientOpts {
     apiUrl: string
@@ -126,7 +126,7 @@ export class Client {
     private async _doLogin(): Promise<void> {
         try {
             const {apiUrl, username, password} = this.opts
-            const path = `${this.opts.apiUrl}/j_security_check?j_username=${username}&j_password=${password}`
+            const path = `${apiUrl}/j_security_check?j_username=${username}&j_password=${password}`
             const resp = await this.c.post(path, null, {validateStatus: s => s >= 300 && s <= 400})
             this.c.defaults.headers.Cookie = resp.headers['set-cookie'][0]
         } catch (e) {

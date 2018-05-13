@@ -17,4 +17,5 @@ install:
   - npm install -g typescript ts-node
 
 script:
-  - ts-node src/main.ts
+  - ts-node src/main.ts -r jest
+  - ts-node src/main.ts -r bitscript
