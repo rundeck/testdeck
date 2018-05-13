@@ -15,7 +15,10 @@ Testdeck utilizes two test runners:
 
 
 [**Node.js**](https://github.com/creationix/nvm#install-script)  
-It is highly recommended that node.js be installed and managed by nvm.
+It is highly recommended that node.js be installed and managed by nvm. Project was developed with node ```>=8.11.0```.
+```
+nvm install 8
+```
 
 [**Rundeck CLI**](https://rundeck.github.io/rundeck-cli/install/)  
 Java-based CLI required for some tests to complete.
