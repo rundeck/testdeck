@@ -3,9 +3,11 @@ import * as Path from 'path'
 import chalk, { Chalk } from 'chalk'
 import indent from 'indent-string'
 
-import {TestRepo} from './test-repo'
 import {exec} from './async/child-process'
+import {TestRepo} from './test-repo'
 
+import Axios, { AxiosError } from 'axios';
+import {Client} from './rundeck-client/client'
 
 async function asyncMain() {
     process.env.RD_URL = 'http://localhost:8080'
@@ -24,7 +26,7 @@ async function asyncMain() {
                 console.log(`${chalk.green('✔️')} ${test.name}`)
                 stdout = res.stdout
                 stderr = res.stderr
-            } catch(e) {
+            } catch (e) {
                 console.log(`${chalk.red('❌')} ${test.name} ${test.file}`)
                 stdout = e.stdout
                 stderr = e.stderr

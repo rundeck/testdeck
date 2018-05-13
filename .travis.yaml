@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk8
+services:
+  - docker
+addons:
+  apt:
+    - rundeck-cli
+before_install:
+  - nvm install 8
+install:
+  - npm install
