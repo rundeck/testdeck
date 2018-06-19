@@ -5,6 +5,8 @@ services:
   - docker
 addons:
   chrome: stable
+env:
+  PROJECT: testdeck
 before_install:
   - sudo echo "deb https://dl.bintray.com/rundeck/rundeck-deb /" | sudo tee -a /etc/apt/sources.list.d/rundeck.list
   - curl "https://bintray.com/user/downloadSubjectPublicKey?username=bintray" > /tmp/bintray.gpg.key
