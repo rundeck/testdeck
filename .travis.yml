@@ -5,6 +5,8 @@ services:
   - docker
 addons:
   chrome: stable
+env:
+  PROJECT: testdeck
 before_install:
   - sudo echo "deb https://dl.bintray.com/rundeck/rundeck-deb /" | sudo tee -a /etc/apt/sources.list.d/rundeck.list
   - curl "https://bintray.com/user/downloadSubjectPublicKey?username=bintray" > /tmp/bintray.gpg.key
@@ -15,10 +17,10 @@ before_install:
   - nvm install 8
 install:
   - npm install
-  - docker-compose up -d rundeck
   - npm install -g typescript ts-node
 
 script:
-  - ./node_modules/.bin/tslint --project .
-  - ts-node src/main.ts -r jest
-  - ts-node src/main.ts -r bitscript
+  # - ./node_modules/.bin/tslint --project .
+  # - ts-node src/main.ts -r jest
+  # - ts-node src/main.ts -r bitscript
+  - printenv
