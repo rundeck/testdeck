@@ -1,0 +1,26 @@
+version: "3.4"
+
+x-testdeck:
+  service_base: rdtest-generic
+
+services:
+  mysql:
+    image: mysql:5.6
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rundeck
+      MYSQL_USER: rundeck
+      MYSQL_PASSWORD: rundeck
+    command: --character-set-server=utf8mb4
+  rundeck1:
+    links:
+      - mysql
+    environment:
+      CONFIG_SCRIPT_PRESTART: scripts/config-db.sh
+      DATABASE_DRIVER: com.mysql.jdbc.Driver
+      DATABASE_URL: jdbc:mysql://mysql:3306/rundeck?autoReconnect=true&useUnicode=yes
+      DATABASE_USER: rundeck
+      DATABASE_PASS: rundeck
+      DATABASE_DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect

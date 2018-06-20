@@ -1,0 +1,29 @@
+version: "3.4"
+
+x-testdeck:
+    foo: bar
+
+services:
+    rundeck1:
+        image: rundeckapp/testdeck:rdtest-${BUILD_NUMBER-latest}
+        hostname: rundeck1
+        environment:
+            RUNDECK_NODE: localhost
+            RUNDECK_URL: http://localhost:4440/
+            LAUNCHER_URL: ${LAUNCHER_URL}
+            CLI_DEB_URL: ${CLI_DEB_URL}
+            CLI_VERS: ${CLI_VERS}
+            SETUP_TEST_PROJECT: test
+            TEST_NC_PORT: 4444
+            TEST_NC_HOST: localhost
+            WAIT_NODES: localhost
+        ports: ['4440:4440']
+        volumes:
+        - logs:/home/rundeck/logs:rw
+        - resources:/home/rundeck/resources:rw
+        - tests:/home/rundeck/tests:rw
+
+volumes:
+    logs:
+    resources:
+    tests:
