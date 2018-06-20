@@ -19,6 +19,7 @@
     "chalk": "^2.4.1",
     "jest": "^22.4.3",
     "ts-node": "^6.0.3",
+    "tsconfig-paths": "^3.4.1",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   },
@@ -36,7 +37,7 @@
     ],
     "moduleDirectories": [
       "node_modules",
-      "./"
+      "./src"
     ],
     "moduleFileExtensions": [
       "ts",
