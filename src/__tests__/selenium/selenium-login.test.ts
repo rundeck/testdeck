@@ -7,11 +7,14 @@ import {Options} from 'selenium-webdriver/chrome'
 
 import {Context, LoginPage} from 'pages/login.page'
 import { sleep } from 'async/util';
+import 'test/rundeck'
+
 
 jest.setTimeout(60000)
 
 // We will initialize and cleanup in the before/after methods
 let driver: WebDriver
+let ctx: Context
 let loginPage: LoginPage
 
 beforeAll( async () => {
@@ -25,7 +28,16 @@ beforeAll( async () => {
         .setChromeOptions(opts)
         .build()
 
-    loginPage = new LoginPage(new Context(driver, 'http://ubuntu:4440'))    
+    ctx = new Context(driver, 'http://ubuntu:4440')
+    loginPage = new LoginPage(ctx)
+})
+
+beforeEach( async () => {
+    ctx.currentTestName = expect.getState().currentTestName
+})
+
+beforeEach( async () => {
+    console.log(ctx.friendlyTestName())
 })
 
 /**
@@ -38,4 +50,10 @@ afterAll( async () => {
 it('Logs in through the GUI', async () => {
     await loginPage.get()
     await loginPage.login('admin', 'admin')
+    await sleep(500)
+    const img = Buffer.from((await ctx.driver.takeScreenshot()), 'base64')
+    expect(img).toMatchImageSnapshot({
+        customSnapshotsDir: '__image_snapshots__',
+        customDiffConfig: { threshold: 0.3 }
+    })
 })

@@ -11,10 +11,16 @@ export enum Elems {
 }
 
 export class Context {
+    currentTestName!: string
+
     constructor(readonly driver: WebDriver, readonly baseUrl: string) {}
 
     urlFor(path: string) {
         return Path.join(this.baseUrl, path)
+    }
+
+    friendlyTestName() {
+        return this.currentTestName.toLowerCase().replace(/ /g, '_')
     }
 }
 
