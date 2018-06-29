@@ -1,6 +1,5 @@
-import * as Path from 'path'
-
-import {WebDriver} from "selenium-webdriver"
+import {Context} from 'selenium/context'
+import {Page} from 'page'
 import {By, until} from 'selenium-webdriver'
 
 export enum Elems {
@@ -10,41 +9,12 @@ export enum Elems {
     loginBtn = '//button[text() = "Login"]',
 }
 
-export class Context {
-    currentTestName!: string
+export class LoginPage extends Page {
+    path = '/'
 
-    constructor(readonly driver: WebDriver, readonly baseUrl: string) {}
-
-    urlFor(path: string) {
-        return Path.join(this.baseUrl, path)
+    constructor(readonly ctx: Context) {
+        super(ctx)
     }
-
-    friendlyTestName() {
-        return this.currentTestName.toLowerCase().replace(/ /g, '_')
-    }
-
-    async disableTransitions() {
-        await this.driver.executeScript( () => {
-            let styles = document.styleSheets
-            let style = styles.item(0) as CSSStyleSheet
-            if (style) {
-                console.log(`Insterting no-transition rule into ${style.rules.item(0)!.cssText}`)
-                style.insertRule(`.notransition * { 
-                    -webkit-transition: none !important; 
-                    -moz-transition: none !important; 
-                    -o-transition: none !important; 
-                    -ms-transition: none !important; 
-                    transition: none !important; 
-                }`, 0)
-            }
-            document.body.classList.add('notransition')
-            return true
-        })
-    }
-}
-
-export class LoginPage {
-    constructor(readonly ctx: Context) {}
 
     async get() {
         const {driver} = this.ctx
