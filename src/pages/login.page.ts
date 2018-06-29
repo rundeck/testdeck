@@ -22,6 +22,25 @@ export class Context {
     friendlyTestName() {
         return this.currentTestName.toLowerCase().replace(/ /g, '_')
     }
+
+    async disableTransitions() {
+        await this.driver.executeScript( () => {
+            let styles = document.styleSheets
+            let style = styles.item(0) as CSSStyleSheet
+            if (style) {
+                console.log(`Insterting no-transition rule into ${style.rules.item(0)!.cssText}`)
+                style.insertRule(`.notransition * { 
+                    -webkit-transition: none !important; 
+                    -moz-transition: none !important; 
+                    -o-transition: none !important; 
+                    -ms-transition: none !important; 
+                    transition: none !important; 
+                }`, 0)
+            }
+            document.body.classList.add('notransition')
+            return true
+        })
+    }
 }
 
 export class LoginPage {
@@ -50,6 +69,6 @@ export class LoginPage {
 
         await loginBtn.click()
 
-        await driver.wait(until.titleMatches(/^Rundeck$/))
+        await driver.wait(until.titleMatches(/^((?!Login).)*$/i))
     }
 }

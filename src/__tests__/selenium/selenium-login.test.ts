@@ -20,6 +20,8 @@ let loginPage: LoginPage
 beforeAll( async () => {
     const opts = new Options()
 
+    opts.addArguments('window-size=1200,1000')
+
     if (process.env.CI)
         opts.addArguments('--headless')
 
@@ -27,6 +29,8 @@ beforeAll( async () => {
         .forBrowser('chrome')
         .setChromeOptions(opts)
         .build()
+
+    // await driver.manage().window().setRect({height: 1000, width: 1200})
 
     ctx = new Context(driver, 'http://ubuntu:4440')
     loginPage = new LoginPage(ctx)
@@ -50,10 +54,8 @@ afterAll( async () => {
 it('Logs in through the GUI', async () => {
     await loginPage.get()
     await loginPage.login('admin', 'admin')
-    await sleep(500)
     const img = Buffer.from((await ctx.driver.takeScreenshot()), 'base64')
-    expect(img).toMatchImageSnapshot({
-        customSnapshotsDir: '__image_snapshots__',
-        customDiffConfig: { threshold: 0.3 }
-    })
+    await ctx.disableTransitions()
+    await sleep(1000)
+    expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__'})
 })

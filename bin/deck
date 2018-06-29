@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/../node_modules/.bin/ts-node -r tsconfig-paths/register $DIR/../src/cli.ts "${@}"
