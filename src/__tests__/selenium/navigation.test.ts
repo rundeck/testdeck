@@ -37,35 +37,31 @@ describe('expanded navigation bar', () => {
         await loginPage.login('admin', 'admin')
         await navigation.gotoProject('Sleep')
         await navigation.toggleSidebarExpand()
-        await ctx.stabilizeScreenshot()
+        await navigation.freeze()
     })
 
     it('visits jobs', async () => {
         await navigation.visitJobs()
-        await ctx.stabilizeScreenshot()
-        const img = Buffer.from(await ctx.screenCap(), 'base64')
+        const img = Buffer.from(await navigation.screenshot(), 'base64')
         expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
     })
 
     it('visits nodes', async () => {
         await navigation.visitNodes()
-        await ctx.stabilizeScreenshot()
-        const img = Buffer.from(await ctx.screenCap(), 'base64')
+        const img = Buffer.from(await navigation.screenshot(), 'base64')
         expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
     })
 
     it('visits commands', async () => {
         await navigation.visitCommands()
-        await ctx.stabilizeScreenshot()
-        const img = Buffer.from(await ctx.screenCap(), 'base64')
+        const img = Buffer.from(await navigation.screenshot(), 'base64')
         expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
     })
 
     it('visits activity', async () => {
         await navigation.visitActivity()
-        await ctx.stabilizeScreenshot()
         await navigation.blur()
-        const img = Buffer.from(await ctx.screenCap(), 'base64')
+        const img = Buffer.from(await navigation.screenshot(), 'base64')
         expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
     })
 })

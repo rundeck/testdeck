@@ -37,7 +37,7 @@ it('Logs in through the GUI', async function() {
         await loginPage.get()
         await loginPage.login('admin', 'admin')
         await navigation.toggleSidebarExpand()
-        const img = Buffer.from((await ctx.screenCap()), 'base64')
+        const img = Buffer.from((await navigation.screenshot()), 'base64')
         console.time('diff')
         try {
             expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
