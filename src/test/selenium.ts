@@ -1,12 +1,16 @@
 import 'chromedriver'
 import {Options} from 'selenium-webdriver/chrome'
 import webdriver from 'selenium-webdriver'
+import {toMatchImageSnapshot} from 'jest-image-snapshot'
+
 
 import {Context} from 'selenium/context'
 
 const opts = new Options()
 
 jest.setTimeout(60000)
+
+expect.extend({ toMatchImageSnapshot })
 
 export async function CreateContext() {
     opts.addArguments('window-size=1200,1000')
@@ -24,4 +28,3 @@ export async function CreateContext() {
     let ctx = new Context(driver, 'http://ubuntu:4440')
     return ctx
 }
-

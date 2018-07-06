@@ -1,7 +1,8 @@
-import * as Path from 'path'
+import * as Url from 'url'
 
 import {WebDriver, WebElement} from 'selenium-webdriver'
-import {until} from 'selenium-webdriver'
+import {By, until} from 'selenium-webdriver'
+import { version } from 'chromedriver';
 
 export class Context {
     currentTestName!: string
@@ -9,18 +10,55 @@ export class Context {
     constructor(readonly driver: WebDriver, readonly baseUrl: string) {}
 
     urlFor(path: string) {
-        return Path.join(this.baseUrl, path)
+        return Url.resolve(this.baseUrl, path)
     }
 
     friendlyTestName() {
         return this.currentTestName.toLowerCase().replace(/ /g, '_')
     }
 
-    /**
-     * Attempts to clear transitions, animations, and animated gifs from the page
-     */
+    async screenCap(stabilize = true) {
+        if (stabilize)
+        await this.stabilizeScreenshot()
+        return await this.driver.takeScreenshot()
+    }
+
+    /** Toggles various settings to produce stable screenshots */
+    async stabilizeScreenshot() {
+        await Promise.all([
+            this.hideSpinners(),
+            this.hideVersionBox(),
+            this.disableTransitions()
+        ])
+    }
+
+    /** Hides version box for screenshots */
+    async hideVersionBox() {
+        const versionBox = await this.driver.findElement(By.className('snapshot-version'))
+        await this.driver.executeScript((element: HTMLElement) => {
+            element.style.setProperty('display', 'none')
+        }, versionBox)
+    }
+
+    /** Hide spinners */
+    async hideSpinners() {
+        const spinners = await this.driver.executeScript<WebElement[]>(() => {
+            let spinners = document.getElementsByClassName('loading-spinner')
+                for (let elem of spinners) {
+                    elem.remove()
+                }
+            return spinners
+        })
+
+        if (spinners.length > 0) {
+            console.log(spinners)
+            await this.driver.wait(until.stalenessOf(spinners[0]))
+        }
+    }
+
+    /** Attempts to clear transitions, animations, and animated gifs from the page */
     async disableTransitions() {
-        let spinners = await this.driver.executeScript<WebElement[]>( () => {
+        await this.driver.executeScript<WebElement[]>( () => {
             let styles = document.styleSheets
             let style = styles.item(0) as CSSStyleSheet
             if (style) {
@@ -34,17 +72,8 @@ export class Context {
                 }`, 0)
             }
             document.body.classList.add('notransition')
-            let spinners = document.getElementsByClassName('loading-spinner')
-                for (let elem of spinners) {
-                    elem.remove()
-                }
             let x = document.body.offsetHeight
-            return spinners
         })
-        if (spinners.length > 0) {
-            console.log(spinners)
-            await this.driver.wait(until.stalenessOf(spinners[0]))
-        }
     }
 
     async dispose() {

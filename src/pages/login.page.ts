@@ -6,7 +6,7 @@ export enum Elems {
     username= '//*[@id="login"]',
     password = '//*[@id="password"]',
     /** @todo This button could use an id */
-    loginBtn = '//button[text() = "Login"]',
+    loginBtn = '//*[@id="btn-login"]',
 }
 
 export class LoginPage extends Page {
@@ -22,6 +22,7 @@ export class LoginPage extends Page {
     }
 
     async login(username: string, password: string) {
+        await this.get()
         const {driver} = this.ctx
 
         // Fetches the elements concurrently
